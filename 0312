@@ -1,0 +1,355 @@
+### JAVA
+public class Example1 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		test2();
+	}
+	
+	public static void test1() {
+		int kor = 99, eng = 99, mat =98; //정수형 변수 메모리공간에 4바이트 할당.
+		int total = kor + eng + mat;
+		double avg = (double)total / 3; //total을 더블로 형변환 시키겠다. 정수->실수
+		System.out.printf("합계는 %d점 입니다.\n", total); // \n 이스케이프 문자 사용하면 똑같은결과.
+		System.out.printf("평균은 %.2f점 입니다.\n", avg); //.2f 소수2자리수까지
+		//double은 8바이트공간 할당. 정수는 int 4바이트로 사용
+	}
+	
+	public static void test2() { //문자열은 " sadasdsa " 적으면된다. c에서는 문자열 담을수없기때문에
+		//배열과 포인터를 사용한다. java에서는 문자열을 담기위한 데이터파일이 존재한다. "String"
+		String name = "홍길동"; //String은 int,double등과 다름. int double 개서민 String귀족
+		//name은 String클래스의 객체이다.
+		System.out.println(name + "님 반갑습니다.");
+		System.out.printf("%s님 반갑습니다.\n",name);
+		
+		int a = 10; //a는 변수임. a.찍어도 아무것도안나옴. 객체가아니라서 걍 이름임.
+		String b = "hello"; //b는객체 즉,String이라는 class로부터 b를 뽑아낸것.
+		Integer c = 100;
+		System.out.println(c);
+		
+		
+		
+	}
+	
+}
+
+----------------------------------------------------------------------------------------
+//일반class의 정의 (속성과 메서드로 구성)
+class Point1 {
+	//속성 정의(클래스의 멤버 변수)
+	int x = 100, y=200;//속성정의 x축100,y축200
+			
+}
+
+class Point2 {
+	int x;
+	int y;
+	double z;
+	String name;
+}
+
+class Point {
+	//속성 메소드
+	int x;
+	int y;
+	
+	// 메소드를 정의
+	void display() {
+		System.out.printf("(%d,%d)\n", x, y);
+	}
+	
+	void myDisplay() {
+		System.out.println("x축 : " + x);
+		System.out.println("y축 : " + y);
+
+	}
+}
+
+public class Example2 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		test3();
+	}
+	
+	public static void test1() {
+		//일반 클래스로 부터 객체를 생성
+		Point1 pt = new Point1(); //Point1 클래스로부터 pt라는 변수를 만듬. 
+		// pt=객체를 가르키는 참조변수 Point1()=실제객체
+		// 객체 참조변수를 사용하여 멤버(속성)에 접근 : 메세지
+		//메세지 표현방법(객체.속성)), 객체.메소드
+		System.out.println(pt.x); //(pt객체.메소드x)
+		System.out.println(pt.y);
+		
+		pt.x = 10;
+		pt.y = 20;
+		System.out.println(pt.x + pt.y); //
+		
+		Point1 mypt = new Point1();
+		System.out.printf("(%d,%d)\n", mypt.x, mypt.y);
+	}
+	
+	public static void test2() {
+		Point2 pt1 = new Point2();
+		System.out.println(pt1.x + ", " + pt1.y + ", " + pt1.z);
+		System.out.println(pt1.name);
+		
+	}
+	
+	public static void test3() {
+		Point pt = new Point();
+		pt.x = 100;
+		pt.y = 200;
+		pt.display(); //속성호출할때
+		pt.myDisplay();
+	
+		
+	}
+}
+-------------------------------------------------------------------------
+class Car {
+	String name;
+	String color;
+	int engine; //자동차의 3개의 변수정의
+	
+	void displayCar() {
+		System.out.println("차이름:" + name);
+		System.out.println("차색상:" + color);
+		System.out.printf("배기량: %d cc\n",engine); //클래스 지정끝.
+	}
+	
+} 
+
+class Person { //사람에 대한 정보. string이름, int나이, 혈액형ab형도있는데 무시.char이용 %c
+	String name;
+	int age;
+	char blood;
+	double weight;
+	
+	void displayPerson() {
+		System.out.println("이름:" + name);
+		System.out.println("나이:" + age);
+		System.out.printf("혈액형: %c형\n",blood); //클래스 지정끝.
+		System.out.printf("몸무게: %s kg\n", weight);
+		
+	}
+	
+}
+
+class Student {
+	int kor;
+	int eng;
+	int math;
+	int total; //합계
+	double avg;
+	
+	void computAvg() {
+		total = kor + eng + math;
+		avg = (double)total / 3;
+	}
+	
+	void displayStudent() {
+		System.out.printf("국어: %d\n", kor);
+		System.out.printf("영어: %d\n", eng);
+		System.out.printf("수학: %d\n", math);
+		System.out.printf("총점: %d\n", total);
+		System.out.printf("평균: %.1f\n", avg);
+	}
+	
+}
+
+class Test{//이론점수와 실기점수를 가지고 평균을구해서 출력
+
+	
+	double computeAvg(int theory, int practice) {
+		return (theory + practice) / 2.0;
+		
+	}
+}
+
+public class Example3 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		test4();
+	}
+	public static void test1() {
+		System.out.println("내차 정보");
+		Car mycar = new Car();
+		mycar.name = "소나타";
+		mycar.color = "레드";
+		mycar.engine = 2000;
+		mycar.displayCar();
+		
+		System.out.println("엄마차 정보");
+		Car momcar = new Car();
+		momcar.name = "티코";
+		momcar.color = "블랙";
+		momcar.engine = 1000;
+		momcar.displayCar();
+		
+		
+	}
+	
+	public static void test2() {
+		System.out.println("사람 정보");
+		Person my = new Person();
+		my.name = "허경영";
+		my.age = 430;
+		my.blood = 'Z';
+		my.weight = 100;
+		my.displayPerson();
+	}
+				
+	public static void test3() {
+
+		Student my = new Student();
+		my.kor = 100;
+		my.eng = 89;
+		my.math = 36;
+		my.computAvg();
+		my.displayStudent();
+		System.out.printf("[%d : %.1f]\n", my.total, my.avg);
+	}
+	
+	public static void test4() {
+		Test my = new Test();
+		System.out.printf("평균: %.1f\n", my.computeAvg(100,50));
+	}
+	
+}
+------------------------------------------------------------------------------------
+import java.util.Scanner;
+
+class Adder {
+	int number1;
+	int number2;
+	int result;
+	
+	void computeAdder() {
+		result = number1 + number2;
+	}
+	
+	int computeDisplay() {
+		return number1 + number2;
+	}
+	
+	void displayAdder() {
+		System.out.println("결과: " + result);
+	}
+}
+
+
+class Human {
+	String name;
+	int age;
+	double weight;
+	char blood;
+	
+	void displayHuman() {
+		System.out.println("이름 : " + name);
+		System.out.println("나이 : " + age);
+		System.out.println("몸무게 : " + weight);
+		System.out.println("혈액형 : " + blood);
+	}
+}
+public class Example4 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		test4();
+	}
+
+	public static void test1() {
+	// 키보드로 표준 입력 방법. (=콘솔입력 : system.in)
+	// 외부로부터 값을 입력받는 방법
+	// Scanner 클래스를 활용	//CTRL+스페이스바=엔터
+		Scanner input = new Scanner(System.in);
+		//콘솔(키보드/모니터)로 입력받을수있는 Scanner객체를 생성
+	System.out.print("정수입력 : "); //프롬프트를 사용할때는 그냥 print로 쓰자
+	int number = input.nextInt(); //정수를 키워드로 입력.
+	System.out.println("결과 : " + (number+10));
+	
+	input.nextLine();
+	
+	System.out.print("이름을 입력 : ");
+	String name = input.nextLine();//next문자열을 인식하지만 공백이있으면 공백까지만 인식함.
+	System.out.println("이름 : " + name); 
+	
+	System.out.print("취미를 입력 : ");
+	String hobby = input.next();//nextLine 공백도 포함해서 처리함.
+	System.out.println("취미 : " + hobby); 
+	
+	
+	}
+	
+	public static void test2() {
+		Adder my = new Adder();
+		Scanner input = new Scanner(System.in);
+		System.out.print("첫 번째 수 :");
+		my.number1 = input.nextInt();
+		System.out.print("두 번째 수 :");
+		my.number2 = input.nextInt();
+		
+		my.computeAdder();
+		my.displayAdder();
+		
+		System.out.printf("답 : %d\n", my.computeDisplay());
+	}
+	
+	public static void test3() {
+
+		Human man = new Human();
+		Scanner input = new Scanner(System.in);
+		System.out.print("이름은 :");
+		man.name = input.nextLine(); //문자열은 공백이들어갈수도있으니까 nextLine을써라.
+		System.out.print("나이는 :");
+		man.age = input.nextInt();
+		System.out.print("몸무게는 :");
+		man.weight = input.nextDouble();
+		System.out.print("혈액형은 :");
+		man.blood = input.next().charAt(0); //원래 char 문자. 문자열에 몇번째 글자를 뽑아올껀지 알려줌.
+		//문자열 메소드의 charAt()을 이용
+		
+		man.displayHuman();
+		
+	}
+	
+	public static void test4() {
+		String message = "korea";
+		System.out.println(message);
+		System.out.println(message.charAt(0));
+		System.out.println(message.length());//문자길이를 구하는것
+		System.out.println(message.toUpperCase()); //대문자로 바꾸어라.
+	}
+  
+  -----------------------------------------------------------------------------
+  import java.util.Scanner;
+
+// if조건문 : 문장의 조건이 '참일때만'수행한다.
+// 나이구분하기.
+
+
+public class Example6 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		test1();
+	}
+
+	public static void test1() {
+		Scanner input = new Scanner(System.in);
+		System.out.println("나이 입력:");
+		int age = input.nextInt();
+		
+		//19세 이상 성인.
+		
+		if(age >= 19) { //조건(비교 > < >= =< == != not 또는 논리연산자)를 사용
+			System.out.println("성인입니다.");
+		}
+		// 조건이 참일경우 문장을 수행
+		// 조건이 거짓일 경우 무시하고 다음문장 수행
+		else
+		System.out.println("미성년자입니다.");
+	}
+}
