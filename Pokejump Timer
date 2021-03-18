@@ -14,19 +14,20 @@
         <strong>Pokejump Timer</strong><br /><br />
 
         <select id="selid" name="myChoice">
-          <option value="7200">원하는 시간을 선택해주십시오)</option>
+          <option value="7200">원하는 시간을 선택해주세요.)</option>
           <option value="7200">2시간</option>
           <option value="3600">1시간</option>
           <option value="1800">30분</option>
           <option value="450">15분</option>
           <option value="600">10분</option>
           <option value="300">5분</option>
+          // 추후에 거리별 쿨타임 계산 공식이용해서 추가할것!
         </select>
 
         <input type="button" value="GO!" onclick="Pokejump()" />
         <br /><br />
 
-        <span id="countdown">시간설정완료</span>
+        <span id="countdown">시간설정완료!</span>
         <br /><br />
 
         <input type="button" value="Close" onclick="window.close()" />
@@ -67,15 +68,15 @@
         count = count - 1; // 타이머 선택 숫자에서 -1씩 감산함(갱신되기 때문)
 
         document.getElementById("countdown").innerHTML =
-          "완료까지 <b>" + count + "</b>초 남았습니다.";
+          "완료까지 <b>" + count + "</b>초 남았습니다!";
         if (count == 0) {
           clearInterval(time); // 시간 초기화
-          alert("시간이 완료되었습니다.");
+          alert("시간이 완료되었습니다!");
         }
       }
 
       document.oncontextmenu = function () {
-        alert("마우스의 우클릭은 사용할 수 없습니다.");
+        alert("마우스의 우클릭은 사용할 수 없습니다!");
         return false;
       };
     </script>
