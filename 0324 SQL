@@ -78,3 +78,73 @@ WHERE DEPTNO IN ( SELECT DEPTNO
                     FROM EMP
                     WHERE ENAME = 'BLAKE') AND ENAME != 'BLAKE';
                     
+                    
+                    
+--10번 직속상사(MGR >> 해당 사원의 직속상사에 대한 사원번호)가 KING인 모든 사원의 이름과 급여를 출력하는 SQL작성.(서브쿼리)
+SELECT ENAME, SAL
+FROM EMP
+WHERE MGR = (SELECT EMPNO
+                    FROM EMP
+                    WHERE ENAME = 'KING');
+                    
+                    
+--11번 CHICAGO지역 (DEPT 테이블의 LOC 컬럼)에서 근무하는 사원의 평균 급여 보다 높은 급여를 받는 사원의 사원이름, 급여, 지역명을 출력하는 SQL작성.
+SELECT E.ENAME, E.SAL, D.LOC
+FROM EMP E, DEPT D
+WHERE E.DEPTNO = D.DEPTNO
+AND E.SAL > (SELECT FLOOR(AVG(E.SAL))
+                FROM EMP E, DEPT D
+                WHERE E.DEPTNO = D.DEPTNO
+                GROUP BY D.LOC
+                HAVING D.LOC = 'CHICAGO');
+    
+    
+--12번 emp 테이블에서 평균 급여보다 적은 급여를 받는 사원들의 사원이름, 급여를 출력하는 SQL작성.
+SELECT ENAME, SAL
+FROM EMP
+WHERE SAL < (SELECT FLOOR(AVG(SAL))FROM EMP);
+
+
+--13번 emp테이블에서 가장 많은 사원이 속해 있는 부서의 부서번호와 사원 수를 출력하는 SQL작성.
+SELECT DEPTNO, COUNT(DEPTNO)
+FROM EMP
+GROUP BY DEPTNO
+HAVING COUNT(DEPTNO) = (SELECT MAX(COUNT(DEPTNO))
+                        FROM EMP
+                        GROUP BY DEPTNO);
+
+
+--14번 각 부서별 사원의 수를 출력하는 SQL작성.
+SELECT DEPTNO AS 부서번호, COUNT(*) AS 사원수
+FROM EMP
+GROUP BY DEPTNO
+HAVING COUNT(*)>2
+ORDER BY DEPTNO ASC;
+
+
+--15번 emp 테이블에서 10번 부서의 최소 급여를 받는 사원보다 많은 급여를 받는 사원번호, 사원이름을 출력하는 SQL작성.
+SELECT E.EMPNO, E.ENAME
+FROM EMP E, DEPT D
+WHERE E.DEPTNO = D.DEPTNO
+AND E.SAL > (SELECT FLOOR(MIN(E.SAL))
+               FROM EMP E, DEPT D
+                WHERE E.DEPTNO = D.DEPTNO);
+                
+--16번 사원수가 3명이 넘는 부서의 부서명과 사원수를 출력하는 SQL작성.
+SELECT D.DNAME, COUNT(*) 사원수
+FROM EMP E, DEPT D
+WHERE E.DEPTNO = D.DEPTNO
+GROUP BY D.DNAME
+HAVING COUNT(*)>3;
+
+--17번 JAMES보다 일찍 입사한 사원의 이름과 입사일을  출력하는 SQL작성.
+SELECT * FROM EMP
+WHERE HIREDATE < (SELECT HIREDATE
+                    FROM EMP
+                    WHERE ENAME = 'JAMES');
+
+--18번 총 급여가 평균 급여보다 많은 사원의 사원이름, 총급여를 출력하는 SQL작성( 총급여는 SAL+COMM 임. NVL()사용)
+SELECT ENAME, SAL+COMM
+FROM EMP
+WHERE SAL+COMM > (SELECT FLOOR(AVG(SAL)) 
+                    FROM EMP);                    
