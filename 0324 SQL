@@ -1,0 +1,80 @@
+--1번 10번 부서와 20번 부서에서 근무하고 있는 사원의 이름과 부서번호를 출력. 단 사원의 이름은 영문자순으로 출력.
+SELECT ENAME, EMPNO
+FROM EMP
+WHERE DEPTNO IN (10,20)
+ORDER BY ENAME;
+
+--2번 emp테이블에서 각 부서별로 인원수, 급여의 평균,최저급여,최고급여, 급여의 합을 구하여 급여의 합이 많은 순으로 출력.
+SELECT DEPTNO, AVG(SAL), COUNT(*)
+FROM EMP
+GROUP BY DEPTNO;
+
+--3번 emp테이블에서 급여가 최대3000이상인 부서에 대해서 부서번호, 평균급여, 급여의 합을 구하여 출력.
+SELECT DEPTNO, AVG(SAL), SUM(SAL)
+FROM EMP
+GROUP BY DEPTNO
+HAVING MAX(SAL) >= 3000;
+
+--4번 research 부서에 근무하고 있는 사원의 이름 부서번호, 부서이름을 출력
+SELECT E.ENAME, D.DNAME
+FROM EMP E, DEPT D
+WHERE E.DEPTNO = D.DEPTNO
+AND D.DNAME = 'RESEARCH';
+
+--5번 업무JOB이 MANAGER인 사원의 정보를 이름, 업무, 부서명 , 근무지 순으로 출력 (emp, dept)
+SELECT  E.ENAME, JOB, D.DNAME, LOC
+FROM EMP E, DEPT D
+ WHERE E.DEPTNO = D.DEPTNO
+ AND JOB = 'MANAGER';
+ 
+--6번 커미션(comm)을 받고 급여가 1,600이상인 사원의 사원이름, 부서명,근무지를 출력(emp, dept)
+SELECT  E.ENAME, D.DNAME, LOC
+FROM EMP E, DEPT D
+ WHERE E.DEPTNO = D.DEPTNO
+ AND SAL >= 1600
+ AND COMM IS NOT NULL;
+ 
+ 
+ --서브쿼리문
+ SELECT * FROM EMP
+ WHERE SAL > (SELECT SAL 
+                FROM EMP 
+                WHERE ENAME = 'SMITH'); --SMITH가 제일 급여가 낮음ㅋㅋ
+                
+
+SELECT * FROM EMP
+WHERE HIREDATE < (SELECT HIREDATE
+                    FROM EMP
+                    WHERE ENAME = 'MARTIN');
+
+                
+--7번 10번 부서에서 급여를 가장 적게 받는 사원과 동일한 급여를 받는 사원의 이름과 급여를 출력하는 SQL작성
+SELECT ENAME, SAL
+FROM EMP
+WHERE SAL = (SELECT MIN(SAL) 
+                FROM EMP
+                WHERE DEPTNO='10');
+                    
+                    
+--8번 평균 급여보다 많은 급여를 받는 사원들의 사원번호, 사원이름, 급여를 출력하는 SQL작성.
+SELECT EMPNO, ENAME, SAL
+FROM EMP
+WHERE SAL IN (SELECT SAL
+                FROM EMP
+                WHERE SAL > AVG(SAL));
+                
+                
+--9번 BLAKE와 같은 부서에 있는 사원들의 이름과 입사일을 출력하는 SQL문을 작성.
+SELECT ENAME, HIREDATE
+ FROM EMP
+ WHERE DEPTNO IN ( SELECT DEPTNO
+                    FROM EMP
+                    WHERE ENAME = 'BLAKE');
+
+--9-1번 BLAKE와 같은 부서에 있는 사원들의 이름과 입사일을 출력하는 SQL문을 작성. 단 BLAKE는 제외.                    
+SELECT ENAME, HIREDATE
+FROM EMP
+WHERE DEPTNO IN ( SELECT DEPTNO
+                    FROM EMP
+                    WHERE ENAME = 'BLAKE') AND ENAME != 'BLAKE';
+                    
