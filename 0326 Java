@@ -1,0 +1,42 @@
+## Java배열..
+
+import java.util.Scanner;
+
+class Grade {
+	//우리반 학생 10명에 대한 점수가 들어있다.
+	int[] score; //score이라는 배열을 정수.
+	
+	public int getTotal() {
+		int total = 0;
+		for(int index = 0; index < score.length; index++) {
+			total += score[index];
+		}
+		return total;
+	}
+	
+}
+public class Practice05 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		test1();
+	}
+
+	
+	public static void test1() {
+		Grade my = new Grade();
+		Scanner input = new Scanner(System.in); 
+		//int[]jumsu = {100, 90, 80, 70, 60};
+		
+		
+		my.score = new int[5];
+		for(int index = 0; index < my.score.length; index++) {
+			System.out.print("점수 입력 : ");
+			my.score[index] = input.nextInt();
+			
+		}
+		System.out.println("총합 : " + my.getTotal());
+	}
+	
+	
+}
