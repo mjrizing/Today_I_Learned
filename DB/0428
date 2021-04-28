@@ -1,0 +1,46 @@
+
+* SQLPLUS 에서 화면 지우기
+SQL> cl scr(<< 화면 지우기)
+
+ * Oracle DB접속
+ CMD> sqlplus system/oracle
+          >>sqlplus에서 접속하기위해 사용자명 system 암호 oracle 입력.
+          
+ * Server 와 Clinet
+ Service + er = 서버를 제공하는 사람/프로그램
+ DB server 데이터베이스 서비스를 제공함.
+ Client 네트워킹통해 접속.
+ 
+ 1.SQL> create user oraclstudy identified by ORACLE; 사용자생성
+                    ---------- ------------- -------
+                    사용자이름 암호지정키워드 ORCLSTUDY 사용자의 암호
+                    
+ 2.create user ORCLSTUDY identified by ORACLE; 시스템 사용자로 로그인 한 후 ORCLSTUDY(암호: ORACLE) 사용자 생성
+ - 사용자명 정의시 대소문자 구분하지 않음
+ - 하지만 사용자 정보가 담긴 데이터 사전에는 대문자로 들어가 있음(주의)
+ - 암호는 정의시 사용한 대로 대소문자를 구분함(주의)
+ 
+ 3.grant create session to ORCLSTUDY;
+ -system 사용자로 로그인 한 후 ORCLSTUDY 사용자에게 DB에 접속할 수 있는 권한부여  (grant)
+ -grant는 권한 부여시 사용하는 명령어
+
+ 4. SELECT * FROM ALL_USERS WHERE USERNAME='ORCLSTUDY';
+ >> ALL_USERS 데이터 사전에 방금 생성한 ORCLSTUDY 사용자가 있는지 확인하는 SQL 쿼리문.
+ 
+ 5. 사용자의 암호 변경 ( SYSTEM 사용자로 접속한 후)
+ 
+ >> alter user   orclstudy     identified by   ORCL;
+    ----------   ---------     -------------   -----
+    사용자 수정    수정대상       암호 설정       암호
+    
+    ---> orclstudy 사용자의 암호가 ORACLE 에서 ORCL로 변경됨
+    
+    >> SYSTEM 사용자 암호 복구
+    
+    CMD> sqlplus sys/as sysdba << 입력
+                               << sys 사용자의 암호를 입력하라는 메시지가 나옴
+                               이 때 별도의 암호를 입력하지 않고
+                               enter 키를 누르면 sys사용자로 접속된다.
+                               
+    SQL> alter user system identified by 새로운암호
+    
