@@ -1,0 +1,70 @@
+#다형성
+-다형성이란 하나의 메소드나 클래스가 있을 때 이것들이 다양한 방법으로 동작하는 것을 의미한다.    
+-키보드의 키를 통해서 비유를 들어보겠다. 키보드의 키를 사용하는 방법은 '누른다'이다.    
+-하지만 똑같은 동작 방법의 키라고 하더라도 ESC는 취소를 ENTER는 실행의 목적을 가지고 있다.    
+-다형성이란 동일한 조작방법으로 동작시키지만 동작방법은 다른 것을 의미한다.
+
+
+class Animal {
+	public void move() {
+		System.out.println("Animal move");
+	}
+	
+}
+
+class Human extends Animal{
+	//human과 tiger은 상속해야함을 알수있음. human,tiger은 animal 수직관계 서로는 수평관계.
+	//extends Animal 애니멀 클래스로부터 상속을 받는다는 의미.
+	@Override
+	public void move() {
+		System.out.println("Human move");
+	}
+	
+	public void reading() {
+		System.out.println("Human reading");
+	}
+}
+
+class Tiger extends Animal{
+	@Override
+	public void move() {
+		System.out.println("Tiger move");
+	}
+	public void hunting() {
+		System.out.println("Tiger Hunting");
+	}
+	
+}
+
+class Eagle extends Animal{
+	@Override
+	public void move() {
+		System.out.println("Eagle move");
+	}
+	
+	public void flying() {
+		System.out.println("Eagle flying");
+	}
+}
+
+public class Example1 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		test1();
+
+	}
+	
+	public static void test1() {
+		//자신이 상속하는 클래스의 객체를 참조할 수 있다.
+		Animal ani = new Eagle();
+		ani.move(); //ani는 다형성적인 참조변수. 오버라이딩한 메서드만 호출가능.
+		
+		
+		Animal[] a = {new Human(), new Tiger(), new Eagle()};
+		for(int i = 0; i < 3; i++) {
+			a[i].move(); //다형성의 문제.
+		}
+	}
+
+}
