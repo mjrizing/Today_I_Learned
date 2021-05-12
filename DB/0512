@@ -1,0 +1,27 @@
+## **시스템 계정을 잊어버렸을경우(암호 재설정)**
+- cmd> sqlplus system/ as sysdba
+- 위와 같이 입력하면 system 계정의 암호를 물어본다.
+- 암호를 입력하지 않고 그냥 엔터키를 누르면 SYS계정으로 접속이 됨.
+- sqlplus> show user --> 접속한 사용자 확인 : SYS가 화면에 출력됨
+- sqlplus> alter user system identified by 새로운암호;
+
+## **VIEW(뷰)**
+-반복되는 쿼리의 ( join, subquery 등 ) 결과를 하나의 테이블로 생성.
+-가상의 테이블.
+-뷰의 장점: 편리성, 보안성, 논리적데이터독립성이 있다.
+-편리성: 여러 테이블에서 데이터를 가져와 하나의 테이블로 정의함으로써 질의 작성이 간단하게 된다.
+           미리 작성된 질의를 뷰로 정의해 두면 질의 재사용이 가능하다.
+-보안성: 원본 테이블에서 보안이 필요한 속성을 제외하고 새로운 테이블을 정의하여 사용자에게 
+           제공함으로써 데이터 보안성을 높인다.
+-논리적데이터독립성:뷰를 정의하여 응용 프로그램이 사용하게 하면 개념스키마에 정의된 테이블
+                               구조가 변경되어도 응용프로그램의 변경을 막아 주기 때문에 논리적 데이터
+                               독립성을 제공한다.
+
+```sql
+CREATE OR REPLACE VIEW J_EMP 
+  AS SELECT EMPNO, ENAME, JOB, MGR, E.DEPTNO, DNAME 
+      FROM EMP E , DEPT D 
+      WHERE E.DEPTNO = D.DEPTNO;
+
+ SELECT  *  FROM  J_EMP;
+```
