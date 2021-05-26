@@ -67,7 +67,7 @@ int main() {
 #include <stdio.h>
 //누적계산
 // 값을 입력하세요.
-/*int main() {
+int main() {
 	int a;
 	int sum = 0;
 
