@@ -50,3 +50,36 @@ DROP  SEQUENCE   SEQ_DEPT_SEQUENCE;
 SELECT  *  FROM  USER_SEQUENCES;
 
 
+
+--4. 사원수가 3명 이상인 부서의 부서명과 사원수를 출력하는 SQL작성.
+select job
+     , count(*)
+from emp
+group by job
+having count(*) >= 3;
+
+
+--5. SMITH 사원보다 일찍 입사한 사원의 이름과 입사일을 출력하는 SQL작성.
+SELECT ENAME, HIREDATE
+FROM EMP
+WHERE HIREDATE>(SELECT HIREDATE
+   FROM EMP
+   WHERE ENAME='SMITH');
+   
+
+--6. 급여(SAL+COMM)가 평균 급여보다 많은 사원의 부서번호, 이름, 급여(SAL+COMM)를 출력하는 SQL작성.
+SELECT DEPTNO, ename, SAL+COMM
+FROM emp
+WHERE SAL+COMM > (SELECT AVG(SAL) FROM EMP)
+ORDER BY SAL;
+
+
+--7. 업무가 SALSEMAN인 직원이 2명 이상인 부서의 이름, 근무하는 사원의 이름을 출력하는 SQL작성.
+SELECT D.DNAME, E.ENAME
+FROM EMP E, DEPT D
+WHERE E.DEPTNO = D.DEPTNO
+    AND E.DEPTNO IN (   SELECT DEPTNO 
+                        FROM EMP
+                        WHERE JOB = 'SALESMAN'
+                        GROUP BY DEPTNO
+                        HAVING COUNT(job) >= 2);
