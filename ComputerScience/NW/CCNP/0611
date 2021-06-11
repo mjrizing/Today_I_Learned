@@ -44,3 +44,50 @@ The WAN Edge device can connect to multiple WAN transport(s) on different interf
 At least one interface needs to be configured to initially reach the SD-WAN controllers for onboarding.
 – VPN 512 is the management VPN. It carries the out-of-band management traffic to and from the Cisco SD-WAN devices. This VPN is ignored by OMP and not carried across the overlay network.
 
+
+
+
+
+QoS quick summary:
+
+1. Network factors:
++ Bandwidth: the speed of the link (or the capacity available on the link), usually measured in bits per second (bps)
++ Delay (or latency): how long a packet takes to get from the sender to the receiver. The more the delay, the slower the network. Delay is usually measured in milliseconds (ms)
++ Jitter: A measure of the variation in delay between packets. For example, one packet need 50ms to reach B from A while another packet takes 40ms then the jitter is 10ms
++ Loss: When packets travels to the destination, some of them may get lost.
+
+2. QoS Models:
++ Best Effort: No QoS policies applied
++ Integrated Services (IntServ): Resource Reservation Protocol (RSVP) is used to reserve bandwidth
++ Differentiated Services (DiffServ): Packets are classified and marked individually; policy decisions are made independently by each node in a path.
+
+3. QoS Markings:
++ IP Precedence: The first three bits of the IP ToS field (8 traffic classes)
++ Differentiated Service Code Point (DSCP): The first six bits of the IP ToS are used to provide granular classification
+
+4. QoS terms:
++ Tail drop: When the queue is full, the packet is dropped. This is the default behavior.
++ Policing: is used to control the rate of traffic flowing across an interface. During a bandwidth exceed (crossed the maximum configured rate), the excess traffic is generally dropped or remarked. 
+  The result of traffic policing is an output rate that appears as a saw-tooth with crests and troughs. Traffic policing can be applied to inbound and outbound interfaces. Unlike traffic shaping, QoS policing avoids delays due to queuing. 
+  Policing is configured in bytes.
++ Shaping: retains excess packets in a queue and then schedules the excess for later transmission over increments of time. When traffic reaches the maximum configured rate, additional packets are queued instead of being dropped to proceed later. 
+  Traffic shaping is applicable only on outbound interfaces as buffering and queuing happens only on outbound interfaces. Shaping is configured in bits per second.
+
+The primary reasons you would use traffic shaping are to control access to available bandwidth, to ensure that traffic conforms to the policies established for it, and to regulate the flow of traffic in order to avoid congestion that can occur when the sent traffic exceeds the access speed of its remote, target interface.
++ Marking: allows you to mark (set or change) a value (attribute) for the traffic belonging to a specific class
+
+5. Congestion Management (types of queuing): uses the marking on each packet to determine which queue to place packets in
+
++ First-in, first-out (FIFO): FIFO entails no concept of priority or classes of traffic. With FIFO, transmission of packets out the interface occurs in the order the packets arrive, which means no QoS.
++ Priority Queuing (PQ): This type of queuing places traffic into one of four queues. Each queue has a different level of priority, and higher-priority queues must be emptied before packets are emptied from lower-priority queues. 
+  This behavior can “starve out” lower- priority traffic.
++ Custom Queuing (CQ): provide specific traffic guaranteed bandwidth at a potential congestion point, assuring the traffic a fixed portion of available bandwidth and leaving the remaining bandwidth to other traffic.
++ Weighted fair queueing (WFQ): allocates bandwidths to flows based on the weight. In addition, to allocate bandwidths fairly to flows, WFQ schedules packets in bits (not bytes). 
+  This prevents long packets from preempting bandwidths of short packets and reduces the delay and jitter when both short and long packets wait to be forwarded.
+
+
+
+Class-based weighted fair queueing (CBWFQ) extends the standard WFQ functionality to provide support for user-defined traffic classes. For CBWFQ, you define traffic classes based on match criteria including protocols, access control lists (ACLs), and input interfaces. Packets satisfying the match criteria for a class constitute the traffic for that class. A queue is reserved for each class, and traffic belonging to a class is directed to the queue for that class.
+Once a class has been defined according to its match criteria, you can assign it characteristics. To characterize a class, you assign it bandwidth, weight, and maximum packet limit. The bandwidth assigned to a class is the guaranteed bandwidth delivered to the class during congestion.
+
+The Resource Reservation Protocol (RSVP) protocol allows applications to reserve bandwidth for their data flows. It is used by a host, on the behalf of an application data flow, to request a specific amount of bandwidth from the network. RSVP is also used by the routers to forward bandwidth reservation requests.
