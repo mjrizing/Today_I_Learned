@@ -1,0 +1,7 @@
+CEF Quick summary:
+
++ Cisco Express Forwarding (CEF) provides the ability to switch packets through a device in a very quick and efficient way while also keeping the load on the router’s processor low. 
+  CEF is made up of two different main components: the Forwarding Information Base (FIB) and the Adjacency Table. 
+  These are automatically updated at the same time as the routing table.
+
+The adjacency table is tasked with maintaining the layer 2 next-hop information for the FIB.
