@@ -1,0 +1,46 @@
+SD-Access Quick summary
+
+There are 5 basic device roles in the fabric overlay:
++ Control plane node: This node contains the settings, protocols, and mapping tables to provide the endpoint-to-location (EID-to-RLOC) mapping system for
+the fabric overlay.
++ Fabric border node: This fabric device (for example, core layer device) connects external Layer 3 networks to the SDA fabric.
++ Fabric edge node: This fabric device (for example, access or distribution layer device) connects wired endpoints to the SDA fabric.
++ Fabric WLAN controller (WLC): This fabric device connects APs and wireless endpoints to the SDA fabric.
++ Intermediate nodes: These are intermediate routers or extended switches that do not provide any sort of SD-Access fabric role other than underlay services.
+
+
+Three major building blocks that make up SDA: the control plane, the data plane and the policy plane.
++ Control-Plane based on LISP
++ Data-Plane based on VXLAN
++ Policy-Plane based on TrustSec
+
+
+SD-WAN Quick Summary
+The primary components for the Cisco SD-WAN solution consist of the vManage network management system (management plane), the vSmart controller (control plane), the vBond orchestrator (orchestration plane), and the vEdge router (data plane).
++ vManage – This centralized network management system provides a GUI interface to easily monitor, configure, and maintain all Cisco SD-WAN devices and links in the underlay and overlay network.
++ vSmart controller – This software-based component is responsible for the centralized control plane of the SD-WAN network. It establishes a secure connection to each vEdge router and distributes routes and policy information via the Overlay Management Protocol (OMP), acting as a route reflector. 
+It also orchestrates the secure data plane connectivity between the vEdge routers by distributing crypto key information, allowing for a very scalable, IKE-less architecture.
++ vBond orchestrator – This software-based component performs the initial authentication of vEdge devices and orchestrates vSmart and vEdge connectivity. 
+It also has an important role in enabling the communication of devices that sit behind Network Address Translation (NAT).
++ vEdge router – This device, available as either a hardware appliance or software-based router, sits at a physical site or in the cloud and provides secure data plane connectivity among the sites over one or more WAN transports. 
+It is responsible for traffic forwarding, security, encryption, Quality of Service (QoS), routing protocols such as Border Gateway Protocol (BGP) and Open Shortest Path First (OSPF), and more.
+
+
+Cisco SD-WAN uses Overlay Management Protocol (OMP) which manages the overlay network. 
+OMP runs between the vSmart controllers and WAN Edge routers (and among vSmarts themselves) where control plane information, such as the routing, policy, and management information, is exchanged over a secure connection.
+
+VPNs in SD-WAN
+In the SD-WAN overlay, virtual private networks (VPNs) provide segmentation. Each VPN is equivalent to a VRF, which is isolated from one another and have their own forwarding tables. 
+An interface or subinterface is explicitly configured under a single VPN and cannot be part of more than one VPN. 
+Devices attached to an interface in one VPN cannot communicate with devices in another VPN unless policy is put in place to allow it. 
+The VPN ranges from 0 to 65535, but several VPNs are reserved for internal use.
+
+The Transport & Management VPNs
+There are two implicitly configured VPNs in the WAN Edge devices and controllers: VPN 0 and VPN 512.
+– VPN 0 is the transport VPN. It contains all the interfaces that connect to the WAN links. Secure DTLS/TLS connections to the controllers are initiated from this VPN.
+Static or default routes or a dynamic routing protocol needs to be configured inside this VPN in order to get appropriate next-hop information so the control plane can be established and IPsec tunnel traffic can reach remote sites.
+VPN 0 connects the WAN Edge to the WAN transport and creates control plane and data plane connections. 
+The WAN Edge device can connect to multiple WAN transport(s) on different interfaces on the same VPN 0 transport segment. 
+At least one interface needs to be configured to initially reach the SD-WAN controllers for onboarding.
+– VPN 512 is the management VPN. It carries the out-of-band management traffic to and from the Cisco SD-WAN devices. This VPN is ignored by OMP and not carried across the overlay network.
+
