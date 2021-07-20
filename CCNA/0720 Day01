@@ -1,0 +1,135 @@
+
+* Switch => 하나의 로컬 네트워크를 연결, 구성해주는 장비 
+스위치는 가까운 거리를 네트워크 
+
+* Router => 지리적, 물리적으로 떨어진 로컬 네트워크를 로컬 네트워크간의 연결해주는 장비
+스위치와 스위치가 원거리로 떨어져있을때 연결해주는 장비!
+즉, 라우터는 스위치가 하는 로컬네트워크간 연결은 하지않는다!
+
+로컬과 리모트의 기준, 쉽게 말하면 내 것은 로컬! 다른사람 것은 리모트!
+집에도 라우터가 있음! = 모뎀
+
+스위치와 라우터의 데이터 전달범위가 다름!
+
+
+* 호스트간 통신 모델
+ OSI 7계층(Layer), TCP/IP DoD
+ 
+  -Layer 7 Application 응용계층 : 사용자에게 네트워크 인터페이스(연결방식) 제공!
+  -Layer 6 Presentation 표현계층 : 데이터표현방법 
+      유형 : 문자 코드(ASCII코드, 유니코드)
+             그림(이미지)
+             소리(음성)
+             이러한 다양한 데이터들을 어떻게 표현할건지를 결정하는 역할.
+             
+  -Layer 5 Session 세션계층 : '세션 = 연결' 연결을 관리하는 계층
+  --------------------------(7,6,5계층은 개발자영역)-------------------------------
+  
+  -Layer 4 Transport 전송계층 : L4 전송계층
+         - 구분 기준 (신뢰성 유무)
+          TCP : 신뢰성 있음. 확인(Ack)응답이 있는 통신 (속도는 빠르다!)
+          UDP : 신뢰성 없음. 확인(Ack)응답이 없는 통신 (속도는 느리지만! 안정적이다!)
+         - Port 포트번호 제공 : 전송계층에서의 포트란? => '프로그램 식별자'
+          대표적인 포트번호: http(80), telnet(23), ssh(22), dns(53)  서버 프로그램 식별자
+          
+  -Layer 3 Network L3 네트워크계층 : Router, 네트워크를 연결시켜주는 기능. 이때 사용하는 장비가 라우터!
+         - IP(Internet Protocol) 인터넷 프로토콜 : 
+          ex) 대구시 동구 동부로 29.
+          '라우터 = L3(장비)!'
+         - 라우터는 IP 주소 정보를 사용하여 데이터를 전달. 
+          
+  -Layer 2 Datalink L2 데이터링크계층 : Switch, 인접한 장비간의 통신 방법을 제공. 
+         - MAC 주소 : 
+          '스위치 = L2(장비)'
+         - 스위치는 MAC 주소를 사용하여 데이터를 전달.
+         
+  -Layer 1 Physical L1 물리계층 : 케이블( UTP, 랜케이블)
+         - 8가닥, 2가닥씩 꼬여있음. twisted pair
+         - 전압(0, 1)으로 표현 
+         이러한 것들을 '케이블 명세'라고 함.
+         - 광케이블
+         
+  
+ * 클라이언트와 서버 C/S 
+ Client : "서비스 요청자"
+ Server : "서비스 제공자"
+ 
+ * 프로토콜이란?
+ 
+ * TCP/IP 프로토콜 5개의 계층존재
+  - L5 Application  << Application, Presentation, Session 3개 계층에 해당.
+  
+  - L4 Transport
+  
+  - L3 Internet << Netwrok 계층 해당.
+  
+  - L2 Datalink
+  
+  - L1 Physical 
+ 
+ 
+ * Internet Protocol Version 4 (IPv4)
+ 1) Classfull Addressing 네트워크에선 Classfull Addressing이라 한다. Addressing 이란 주소체계를 말함. 클래스화된 주소체계!
+ 2) A Class, B Class, C Class, D Class, E Class로 구분되어있음.
+     D Class : 멀티캐스트 주소범위 해당.
+ 
+  - 통신방식 : 
+      유니캐스트(Unicast) : 1:1 통신.
+      멀티캐스트(Multicast) 1:N 통신, 단 멀티캐스트에 N은 그룹의 개념!
+      브로드캐스트(Broadcast) : 1:N 통신.
+      기준은 왼쪽이 송신, 오른쪽이 수신측.
+ 
+ 3) 주소길이 : 32 bit 
+    비트는 0과 1로 구성됨. 
+        OOOOOOOO OOOOOOOO OOOOOOOO OOOOOOOO 
+        각 자릿수에는 0이나 1이 존재.
+        표기법 : 십진수로 변경! 32개의 비트(자릿수)를 8개씩 4부분으로 나눔.
+        8비트마다 .닷을 찍는다! 8bit 비트 = 1Byte 바이트
+        10진수를 2진수로 변환할 줄 알아야, 서브넷팅이 가능!
+        각 8비트들의 최대값은 0~255까지!
+        네트워크에서는 1 Byte는 1 옥텟 부호는 'O'
+        즉, 8bit = 1옥텟 32bit는 4옥텟
+        
+        192.168.0.52 4개의 옥텟. 각 옥텟의 최대값은 0 ~ 255
+        
+        
+4) A Class :  N.H.H.H ( N -Network ID
+                         H - Host ID )
+      A클래스에서는 1개의 옥텟, 8bit 사용.
+      
+    B Class :  N.N.H.H ( N -Network ID
+                         H - Host ID )
+      B클래스에서는 2개의 옥텟, 16bit 사용.
+      
+    C Class :  N.N.N.H ( N -Network ID
+                         H - Host ID )
+      C클래스에서는 3개의 옥텟, 24bit 사용.
+      
+5)  클래스 구분 비트 ( *첫 번째 옥텟에만 존재!) 
+이러한 첫 번째 옥텟에 존재하는 클래스 구분 비트로 각 클래스를 구분지을 수 있음.
+
+A Class : 첫 번째 비트를 클래스 구분비트로 사용하는데, 이때의 첫번째 비트의 값은 0이다.
+
+    0 O O O O O O O . O O O O O O O O . O O O O O O O O . O O O O O O O O 
+    
+    첫번째 비트의 값이 0으로 시작! ( 0 ~ 127 )
+    즉, A Class는 0XXXXXXX 숫자는 나머지 7개의 비트에서 정해지기때문에 0 ~ 127 
+    A Class는 192.168.0.52의 경우 최대값 127이 넘기때문에 A Class가 아닌것을알 수 있음.
+    
+    
+B Class : 첫 번째와 두 번째 비트를 사용.
+
+    1 0 O O O O O O . O O O O O O O O . O O O O O O O O . O O O O O O O O
+    첫번째 비트와 두번째 비트가 반드시 1 0 으로 시작! ( 128 ~ 191 )
+    
+C Class : 첫 번째, 두 번째, 세 번째 비트를 사용.
+
+    1 1 0 O O O O O . O O O O O O O O . O O O O O O O O . O O O O O O O O
+    첫번째 비트, 두번째 비트, 세 번째 비트가 반드시 1 1 0 으로 시작! ( 192 ~ 223)
+    즉, 자신의 IP주소인 192.168.0.52는 C Class이다.
+    
+    
+      
+                         
+        
+
