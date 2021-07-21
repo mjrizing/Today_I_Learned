@@ -1,0 +1,219 @@
+8.   ip주소를 표기할 때 서브넷 마스크도 함께 표기.
+ex) 192.168.0.16  255.255.255.0
+      = 192.168.0.16  / 24 이렇게도 표현가능.
+      = 서브넷 마스크를 / 24 이런식으로 나타내는 것을  'Prefix 표기법' 이라 한다.
+
+A Class  : 255.0.0.0 = / 8
+B Class : 255.255.0.0 = / 16
+C Class : 255.255.255.0 = / 24
+
+* 서브넷 마스크의 용도
+	:  주어진 ip주소에서 네트워크 ID와 호스트ID를 구분하기위해 사용.
+
+비트 AND 연산.
+0 AND 0 = 0
+0 AND 1 = 0
+1 AND 0 = 0
+1 AND 1 = 1
+
+
+2진수
+                      1010 
+ AND                  1111 
+-------------------------
+=                     1010
+
+
+1. 1. 1. 1    255. 0. 0. 0
+
+위 ip주소와 서브넷마스크를 2진수로 바꾸면
+
+0000 0001. 0000 0001. 0000 0001. 0000 0001
+1111 1111. 0000 0000. 0000 0000. 0000 0000
+
+AND연산한 결과
+0000 0001. 0000 0000. 0000 0000. 0000 0000
+즉, 1.0. 0. 0 = '네트워크 주소'
+
+어떤 ip주소와 서브넷마스크를 AND연산한 결과는 네트워크 주소가 된다.
+네트워크 주소 = 네트워크 ID
+
+
+9. 네트워크 갯수 구하기
+A Class의 Network ID비트 갯수 :  8비트( 클래스 구분비트 1개( 0 )포함되어있음.)
+즉, 실제 구축가능한 네트워크 갯수는 27 = 128 개.
+
+B Class의 Network ID비트 갯수 : 16비트(클래스 구분비트  2개( 1 0 ) 포함되어있음.)
+즉,  실제 구축가능한 네트워크 갯수는 2 14승 개
+
+C Class의 Network ID비트 갯수: 24비트(클래스 구분비트 3개( 1 1 0) 포함되어 있음.)
+즉, 실제 구축가능한 네트워크 갯수는 2 24승 개
+
+---
+10. 호스트 갯수 구하기 ( 네트워크 장비에 설정할 수 있는 주소의 갯수를 의미.)
+ 
+A Class : 호스트 ID 비트 : 호스트 ID비트 >> 24 비트
+구축가능한 네트워크 갯수는 2 24승  개. 
+
+B Class : 호스트 ID 비트 : 호스트 ID비트 >> 16 비트
+구축가능한 네트워크 갯수는 2 16승 개.
+
+C Class : 호스트 ID 비트 : 호스트 ID비트 >> 8 비트
+구축가능한 네트워크 갯수는 28 개 = 256 개.
+
+A Class의 주소범위 1.0.0.0 ~ 1.255.255.255
+네트워크 주소는  1.0.0.0 / 1.255.255.255 브로드캐스트 주소
+브로드캐스트 주소는 예약주소이기 때문에 네트워크장비에 저장할 수 없다.
+
+*ip주소 범위를 계산하면 시작 주소는 네트워크 주소이고, 마지막 주소는 브로드캐스트 주소이다.
+이 두 주소는 네트워크 장비에 설정할 수 없다. 따라서 설정할 수 있는 주소를 계산할때 전체 주소의
+갯수에서 2개의 주소를 뺀 주소들이 네트워크 장비에 설정할 수 있는 주소이다.
+
+A Class : 224 -2 개. ( 네트워크주소, 브로드캐스트주소)
+
+B Class : 216 -2 개. ( 네트워크주소, 브로드캐스트주소)
+
+C Class :  28 -2 개. ( 네트워크주소, 브로드캐스트주소)
+
+실습해보기 
+시스코 패킷 트레이서 실습ID/PW
+mrsnetacd@daum.net
+!Cisco123!
+
+장비추가 클릭 후 드래그 앤 드랍!
+스위치아이콘 클릭후 드래그 앤 드랍!
+라우터 또한 동일함.
+
+장비간 케이블 연결 번개표시
+UTP케이블 설정시 Copper Straight-Through
+
+
+현업 엔지니어들은 노트북과 케이블로 바로바로 설정가능.
+
+1. 라우터 장비 기본설정.
+Router>  : 프롬프트(Prompt), 사용자 모드라 부름.
+	enable 이라는 명령어 = 관리자모드 이동.
+
+Router# : 관리자 모드, enable 모드, 특권모드.
+	disable = 관리자모드 에서 사용자모드로 돌아가기.
+	configure terminal 명령어 = 관리자모드에서 전역설정모드로 이동.
+
+Router(config)# 전역설정모드 : (global configuration mode)
+	장비설정의 99%는 전역설정모드에서 수행. 
+	exit 명령어 = 전역설정모드에서 관리자모드로 빠져나오기.
+	
+
+네트워크에서는 모든 네트워크 장비를 호스트 라 부른다.
+(PC도 라우터도 스위치도 호스트가 될 수 있다.)
+장비이름설정 = 호스트네임 설정
+
+Router(config)# hostname 장비이름 
+Ex)  Router(config)# hostname Daegu
+Ex)  Daegu(config)# hostname Daegu 장비이름이 바뀜
+
+*장비이름 설정을 하는 이유?
+장비관리를 위해서~
+
+설정명령어를 삭제하고싶을경우 ' no 명령어 '
+
+ex) hostname Daegu 를 삭제하고 싶은경우
+	no hostname Daegu 쓰면 삭제가된다. (기본장비이름인 Router로 변경됨.)
+	
+2. 패스워드 설정
+- enable 패스워드 설정
+	- Router> enable
+	- enable패스워드 설정 후 = Router< enable password: 입력한 패스워드는 화면표시x
+암호설정 전역설정모드에서 'enable secret 암호'
+ex) enable secret cisco 설정 (패스워드 cisco)
+exit 전역설정모드 -> 관리자모드
+disable 관리자모드 ->
+
+---
+telnet 패스워드 설정
+telnet 서비스는 원격
+
+3. 텔넷(telnet)설정
+Router(config)# line vty 0 4
+Router(config-line)# password 암호
+Router(config-line)# login
+*라인설정모드
+
+Router(config)# line vty 0 4
+Router(config-line)# password 암호
+Router(config-line)# login 
+
+4. IP설정 ( 설정대상은 인터페이스 )
+Fastethernet 0/0 : 해당인터페이스는 100Mbps를 지원하는  인터페이스
+	즉, 전송속도가 100Mbps인 인터페이스를 의미함.
+	
+ethernet : 10Mbps
+Fast ethernet : 100Mbps
+
+0/0 -> 슬롯번호 / 포트번호 ( 0부터시작)
+
+Router(config)# interface interface_type slot_num/port_num
+	ex)
+	Router(config)# interface fastethernet 0/0
+	Router(config-if)#
+		*if는 interface의 약자, 인터페이스 설정모드
+		
+Router(config-if)# ip address IPv4_주소 서브넷마스크
+	
+	ex)
+	Router(config-if)# ip address 192.168.1.1 255.255.255.0
+
+Router(config-if)# no shutdown 
+로고메세지에 up과 down으로 상태확인가능.
+
+Ctrl + E , Ctrl + A
+
+RAM 휘발성의 주기억장치
+Cisco 장비에는 NVRAM이 있음. NVRAM은 비휘발성의 특징이 있음.
+ 
+
+*스위치 IP주소 설정( 스위치는 Datalink 계층의 역할을 하는 장비)
+	인접한 장비간의 접속방법을 제공, 스위치는 MAC주소를 이용하여 데이터를 전달
+	
+*관리용 IP주소 설정
+*관리용 IP주소를 설정하기 위한 인터페이스가 별도로 존재함.
+
+Switch(config)# interface vlan 1 << VLAN 1 인터페이스가 기본 관리용 인터페이스로 사용됨.
+Switch(config-if)#  ip address IPv4_주소 서브넷마스크 (인터페이스 설정모드)
+
+Switch(config)# interface vlan 1
+Switch(config-if)# ip address 192.168.1.2  255.255.255.0 
+Switch(config-if)# no shutdown
+
+대다수의 cisco 장비설정 명령어는 overwrite (덮어쓰기) 개념.
+
+프로토콜 : 통신 규약
+*네트워크 진단 도구
+-ping 프로그램 (모든 OS에서 기본적으로 제공함.)
+	ICMP 프로토콜 ( Internet Control Message Protocol)
+	수신호스트와 통신이 가능한지 확인하기위해서 사용.
+	통신 대상
+통신 대상에게 icmp request 메시지를 전달.
+	icmp request 메시지를 수신한 호스트는 응답으로
+	icmp reply 메시지를 만들어서 전달함.
+-ping 사용법
+	c:\> ping IPv4_주소
+	통신대상의 IPv4 주소를 적는다.
+
+Encapsulation (캡슐화) : 송신 호스트가 헤더를 추가하는 과정
+					       헤더의 순서는 L7 헤더 에서 L2순.
+					
+De-Encapsulation : 수신 호스트가 각 계층의 헤더를 확인후 제거하는 과정.
+					순서는 L2 -> L7
+---
+		(시간상 다음시간에..)
+		
+		송신    ---------->        수신
+L7
+L6
+L5
+L4
+L3
+L2
+L1
+
+	IP헤더에는 IP주소가 2군데 들어간다. (송신호스트와 수신호스트)
