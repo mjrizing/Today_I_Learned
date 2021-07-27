@@ -1,0 +1,172 @@
+*Transparent Bridging
+	Learning : 스위치가 러닝을 통해서 MAC Table을 만들게된다.  
+		만들어진 MAC Table을 확인하는법 : show mac-address-table
+	
+	Forwarding : MACT TABLE의 정보를 바탕으로해서 frame을 전달하기위한 MAC정보(주소, 포트정보)기록
+		포워딩은 유니캐스트(1:1)통신
+		
+	Flooding :  수신포트는 제외하고 나머지 연결된 모든 포트로 데이터로 전달.
+		플루딩은 브로드캐스트(1:N)통신
+	
+PC A, B, C가 각 스위치 SW1 SW2에 연결되어있다.
+PC A에서 데이터를 보낸다고할때
+Encapsulation으로 HDRs/DATA 가 만약 목적지가 PC B일경우  목적지를 모르는경우, Flooding.
+즉, 라우터와 SW2, SW3 스위치에 연결된 모든 PC에 전달.
+
+*ARP(Address Resolution Protocol)
+	통신대상의 MAC 주소를 알기위해서 사용.
+	통신대상의 IP주소를 이용하여 MAC 주소를 알아내는 프로토콜. 
+		ARP Request(요청) :  PC A가 PC B의 IP주소 192.168.1.101의 MAC소는 뭐? 자체 L2 HDR가 붙음. 출발지 MAC은 PC A의 aaa 목적지             MAC에는 브로드캐스트 주소.(FF-FF-FF-FF-FF-FF)
+		ARP Reply(응답) :  PC B가 192.168.1.101의 MAC은 bbb라는 것을 PC A에 알려준다.
+		
+		
+PC A의 IP가 192.168.1.100/24
+PC B의 IP가 192.168.1.101/24
+PC C의 IP가 192.168.1.102/24
+
+L2헤더붙기전에 L3가 먼저붙는다. L3 = IP헤더
+
+MAC 주소 = Physical 주소
+IP 주소 = Logical 주소
+
+* ICMP(Ping)
+	ICMP Request -> L2 | L3 | DATA
+	ICMP Reply -> L2 | L3 | DATA
+	PC A에서 PC B로 ping 192.168.1.101 입력.
+	PC A에 의해서 ICMP Request 메세지가 생성, 
+		PC B에 보내는 데이터는 L2 | L3 | DATA
+			                                                   L3 필요한 정보는 : 출발지 IP : 192.168.1.100
+						                             목적지 IP : 192.168.1.101
+						L2 정보는 모른다. 이런 경우에는
+이 정보를 buffer(버퍼)에 일시 저장을하고.
+ARP Request PC B의 MAC을 알아내기위해 생성.
+ARP Reply를 통해서 PC B의 MAC을 PC A에게 알려줌.
+PC A는 PC B로부터 온 ARP Reply를 통해 알게된 통신대상 PC B의 MAC을 알게되어 
+버퍼에 저장되어있던 정보를 꺼내 전송하게 된다.
+
+윈도우의 경우 ICMP Request Ping 192.168.1.101 하면 디폴트값으로 총 4개.
+
+*ARP Cache캐쉬(테이블) 캐쉬의 용도는 자주사용하는 메모리를 넣어서 다음에 또 사용.
+arp -a 문제해결에 대한 목적
+arp - d 캐쉬삭제
+
+
+*실습하기
+명령프롬포트창에서 ping 8.8.8.8
+응답메세지가 총4개 온것이 보인다.
+
+						
+Wireshark활용 실습해보기.
+패킷캡쳐프로그램
+icmp 나 arp의 패킷만 캡    쳐가능.
+
+arp -a
+arp -d
+clas
+---
+*복습하기
+TCP/IP
+IP통신
+IP(주소) : 네트워크 장비 식별자.
+		IPv4 = Classfull Addressing
+			A Class : 네트워크 장비 식별자
+			B Class : 네트워크 장비 식별자
+			C Class : 네트워크 장비 식별자
+			D Class : 멀티캐스트 주소
+			E Class : 연구용 
+			
+		구성 = 네트워크 ID + 호스트 ID
+				(지역)           (거주자) 
+				
+				
+		32비트 
+		표기 : 십진수 8비트씩 묶음. ( 4개의 묶음 = 4옥텟 )
+		8bit = 1Byte = 1옥텟
+		
+		각각 묶은 것을 구분하기 위해서 사용하는 기호 .(dot) 사용.
+		각 옥텟을 구분하기 위해.
+		
+								                            [범위]
+		A Class :  N. H. H. H                             0~255. 0~255. 0~255. 0~255
+		B Class : N. N. H. H                              0~255. 0~255. 0~255. 0~255
+		C Class : N. N. N. H                              0~255. 0~255. 0~255. 0~255
+			*N은 Network ID, H는 Host ID
+		클래스 구분 비트가 대두됨. ( 클래스 구분비트는 첫번째 옥텟에 ) 
+		클래스 구분 비트는 고정.
+		
+		A Class :  0XXXXXXX. H. H. H               0~127. 0~255. 0~255. 0~255
+		B Class : 10XXXXXX. N. H. H                128~191. 0~255. 0~255. 0~255
+		C Class : N. N. N. H                                 192~223. 0~255. 0~255. 0~255
+				
+		서브넷마스크 : 주어진 IP에서 네트워크 ID와 호스트ID를 구분하기 위해 사용.
+
+		A Class : 255.0.0.0
+		B Class : 255.255.0.0
+		C Class: 255. 255. 255.0
+		
+		ex) 192.168.1.100   255.255.255.0 
+			
+			192.168.1.100
+	AND          255.255.255.0
+	--------------------------------------=
+			192.168.1.0 = 네트워크 주소
+			
+	예약주소
+		-네트워크 주소: 호스트 주소(ID)가 비트로 모두 0인 주소.
+		-브로드캐스트 주소: 호스트 주소(ID)가 비트로 모두 1인 주소.
+		
+		-0.x.x.x           :    0.0.0.0 = 미확정 주소
+		-127.x.x.x      :   127.0.0.1 = 루프백 주소
+		169.254.x.x  :   링크 로컬 주소, 자동설정 IP주소, 내부통신만가능
+		
+					DHCP 서버
+						PC 에게 IP주소, 서브넷 마스크, 게이트웨이 주소, DNS 서버 주소 등을 알려주는 역할.
+						
+	*Prefix 표기법
+		255.0.0.0                  = /8
+		255.255.0.0             = /16
+		255.255.255.0        = /24
+		
+		ex) 192.168.1.100/ 24  = C Class이고 주어진 비트에서 24번째 비트까지 네트워크ID이다.
+		       172.16.1.5/ 24 이 경우의 네트워크ID는 B Class지만 172.16.1까지가 네트워크ID.
+		
+		
+	*공인 IP : 인터넷  가능
+	  사설 IP : 인터넷 불가능 -> NAT기술 인터넷 가능.
+		A Class  : 10.0.0.0         ~   10.255.255.255 
+		B Class  : 172.16.0.0    ~   172. 31.255.255
+		C Class  : 192.168.0.0  ~   192.168. 255. 255
+		
+*IP HDR
+	: Source/Destination IP
+	: TTL ( Time To Live )
+		>> 라우팅 루핑(Looping) 방지 목적, 라우터를 경유할때마다 1씩감소됨.
+		TTL값이 0인 패킷은 Drop(폐기,버림)된다.
+		
+실습하기
+enable password를 필수적으로설정하지않으면 telnet접속x
+
+
+*DHCP 서버 설정
+1. Client가 사용할 IP주소(범위)를 정의.
+2. Client가 사용할 서브넷마스크를 정의.
+3. Client가 사용할 게이트웨이주소 정의.
+4. Client가 사용할 DNS 서버 주소를 정의.
+
+명령어 => Router(config)# ip dhcp pool pool_name 
+                => Router(dhcp-config)# network address subnetmask
+				Client가 사용할 주소 범위와 서브넷 마스크 정의.
+                => Router(dhcp-config)# default-router gateway_address
+				Client가 사용할 게이트웨이 주소 정의.
+	      => Router(dhcp-config)# default-router dns_server_address
+				Client가 사용할 DNS서버주소 정의.
+
+ex) 
+	Router(config)# ip dhcp pool test
+	Router(dhcp-config)# network 192.168.1.0 255.255.255.0 
+							-> 192.168.1.1 ~ 192.168.1.254 Client가 사용할 수 있는 호스트범위.
+	Router(dhcp-config)# default-router 192.168.1.1 
+	Router(dhcp-config)# dns-server 8.8.8.8
+				
+TCP/UDP ( Layer 4, Transport Layer )
+	세그먼테이션(=분할)
